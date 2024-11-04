@@ -1,95 +1,55 @@
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
+ @override
+  Widget build(BuildContext context ) {
+   return MaterialApp(
+   title:'Flutter Navigation',
+   home:HomeScreen()
+   );
+ }
+} 
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title:'Login Form',
-      theme:ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar:AppBar(
+        title:Text('Home Screen'),
       ),
-      home: LoginForm(),
+      body:Center(
+       child:ElevatedButton(
+        onPressed:() {
+          Navigator.push(
+           context,
+           MaterialPageRoute(builder:(context)=>SecondScreen()),
+          );
+        },
+        child:Text('Go to Second Screen'),
+       ),
+      ),
     );
   }
 }
-class LoginForm extends StatefulWidget {
+class SecondScreen extends StatelessWidget {
   @override
-  _LoginFormState createState() =>_LoginFormState();
-}
-class _LoginFormState extends State<LoginForm>{
-  final _formkey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-final _passwordController = TextEditingController();
-@override
-void dispose() {
-  _emailController.dispose();
-  _passwordController.dispose();
-  super.dispose();
-}
-void _login() {
-  if(_formkey.currentState!.validate()) {
-    String email=_emailController.text;
-    String password=_passwordController.text;
-    print('Email:$email');
-    print('Password:$password');
-  }
-}
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar:AppBar(
-      title: Text('Login Form'),
-    ),
-    body: Padding(
-      padding:const EdgeInsets.all(16.0),
-      child:Form(
-        key:_formkey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:[
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText:'Email',
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if(value==null||value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 16.0),
-            TextFormField(
-              controller:_passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText:'Password',
-                border: OutlineInputBorder(),
-              ),
-              validator:(value) {
-                if(value==null||value.isEmpty) {
-                  return 'Please enter your Password';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed:_login,
-              child: Text('Login'),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:Text('Second Screen'),
+      ),
+      body:Center(
+        child:ElevatedButton(
+          onPressed:() {
+           Navigator.pop(context);
+          },
+          child:Text('Back to Home Screen'),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-  
-  
   
