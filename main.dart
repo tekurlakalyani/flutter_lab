@@ -1,48 +1,95 @@
 import 'package:flutter/material.dart';
-
-void main()=>runApp(MyApp());
-
+void main() {
+  runApp(MyApp());
+}
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home:CounterScreen(),
+      title:'Login Form',
+      theme:ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LoginForm(),
     );
   }
 }
-
-class CounterScreen extends StatefulWidget {
-  @override 
-  _CounterScreenState createState()=>_CounterScreenState();
+class LoginForm extends StatefulWidget {
+  @override
+  _LoginFormState createState() =>_LoginFormState();
 }
-class_CounterScreenState extends State<CounterScreen>{
-  int_counter=0;
-
-  void_incrementCounter(){
-    setState((){
-      _counter++;
-    });
-  }
-  
+class _LoginFormState extends State<LoginForm>{
+  final _formkey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+final _passwordController = TextEditingController();
 @override
-Widget build(BuildContext context){
+void dispose() {
+  _emailController.dispose();
+  _passwordController.dispose();
+  super.dispose();
+}
+void _login() {
+  if(_formkey.currentState!.validate()) {
+    String email=_emailController.text;
+    String password=_passwordController.text;
+    print('Email:$email');
+    print('Password:$password');
+  }
+}
+@override
+Widget build(BuildContext context) {
   return Scaffold(
     appBar:AppBar(
-      title:Text('setState Example'),
+      title: Text('Login Form'),
     ),
-    body:Center(
-      child:Column(
-        mainAxisAlignment:MainAxisAlignment.center,
-        children:[
-          Text('Counter value:$_counter'),
-          SizedBox(height:20),
-          ElevatedButton(
-            onPressed:_incrementCounter,
-            child:Text('Increment Counter'),
-          ),
-        ],
+    body: Padding(
+      padding:const EdgeInsets.all(16.0),
+      child:Form(
+        key:_formkey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:[
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText:'Email',
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if(value==null||value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16.0),
+            TextFormField(
+              controller:_passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText:'Password',
+                border: OutlineInputBorder(),
+              ),
+              validator:(value) {
+                if(value==null||value.isEmpty) {
+                  return 'Please enter your Password';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed:_login,
+              child: Text('Login'),
+            ),
+          ],
+        ),
       ),
     ),
   );
 }
 }
+  
+  
+  
